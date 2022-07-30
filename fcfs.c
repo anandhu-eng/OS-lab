@@ -32,6 +32,7 @@ int main()
     {
         scanf("%d", &arr[i].at);
     }
+    complttime = arr[0].at;
     printf("Enter the burst time of the processes:\n");
     for(i=0;i<n;i++)
     {
