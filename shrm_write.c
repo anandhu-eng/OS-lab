@@ -10,7 +10,7 @@
 int main()
 {
     //generate unique key
-    key_t key = ftok("shrm1.c", 65);
+    key_t key = ftok("shrm_write.c", 65);
     //get unique id for the memory block after creating
     int shmid = shmget(key, 1024, 0666|IPC_CREAT);
     //attach to the memory block just created
