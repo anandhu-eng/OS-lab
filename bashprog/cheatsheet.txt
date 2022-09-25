@@ -1,0 +1,16 @@
+CHEATSHEET FOR BASH PROGRAMMING (OS LAB)
+
+BASH - bourne again shell
+shell is a command line interface to run commands and shell scripts and connects users and os. shell script comes in different flavours depending on the os.
+bash is a superset of shell with improved features which supports command history
+
+inorder to run the .sh file: chmod +x filename.sh. (gives the permission to execute the file as a program)
+
+echo -> prints to output
+echo "hello world"
+echo "$NUMBER" -- way to print the values in the variables
+
+read -> reads from the input
+read NUMBER
+
+**before any expression, we have to write the dollar symbol and expression has to be set in brackets
