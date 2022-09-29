@@ -3,6 +3,5 @@ sjf.c
 prioritysch.c
 roundrbin.c
 *.out
-system calls
 fileallocation
 cpuallocation
