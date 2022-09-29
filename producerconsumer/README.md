@@ -1,0 +1,1 @@
+This directory contains the producer consumer code implemented using IPC
