@@ -3,3 +3,7 @@ sjf.c
 prioritysch.c
 roundrbin.c
 *.out
+system calls
+memory allocation
+fileallocation
+cpuallocation
