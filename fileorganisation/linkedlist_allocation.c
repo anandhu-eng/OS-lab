@@ -33,29 +33,31 @@ int main()
                 //allocating memory block
                 printf("Enter the number of blocks required:");
                 scanf("%d", &rqblks);
-                if(cntr_blks+rqblks>=nofblks)
+                if(cntr_blks+rqblks>nofblks)
                 {
                     printf("Not nenough space to allocate the file!\n");
                     break;
                 }
                 printf("Enter the header blocknumber:");
                 scanf("%d", &inpblk);
-                if(blks[inpblk] != 1)
+                if(blks[inpblk-1] != 1)
                 {
                     if(header == NULL)
                     {
-                        header->blknm = inpblk;
+                        header->blknm = inpblk-1;
                         struct blocks* block = (struct blocks*)malloc(sizeof(struct blocks));
                         header->header = block;
                         blks[inpblk-1] = 1;
+                        cntr_blks++;
                     }
                     else
                     {
                         struct blkhdrs* temp = (struct blkhdrs*)malloc(sizeof(struct blkhdrs));
-                        temp->blknm = inpblk;
+                        temp->blknm = inpblk-1;
                         ptr_hdr->nxthdr = temp;
                         ptr_hdr = ptr_hdr->nxthdr;
                         blks[inpblk-1] = 1;
+                        cntr_blks++;
                     }
                 }
                 else
@@ -80,18 +82,19 @@ int main()
                             {
                                 struct blocks* block = (struct blocks*)malloc(sizeof(struct blocks));
                                 ptr_hdr->header = block;
-                                block->blkno = inpblk;
+                                block->blkno = inpblk-1;
                                 ptr_blk = block;
                                 blks[inpblk-1] = 1;
                             }
                             else
                             {
                                 struct blocks* temp = (struct blocks*)malloc(sizeof(struct blocks));
-                                temp->blkno = inpblk;
+                                temp->blkno = inpblk-1;
                                 ptr_blk->nxtblk = temp;
                                 ptr_blk = ptr_blk->nxtblk;
                                 blks[inpblk-1] = 1;
                             }
+                            cntr_blks++;
                             flag++;
                         }
                         else
@@ -105,7 +108,7 @@ int main()
                 //printing the allocated files
                 struct blkhdrs* traverse_hdr = (struct blkhdrs *)malloc(sizeof(struct blkhdrs));
                 struct blocks* traverse_blk = (struct blocks *)malloc(sizeof(struct blocks));
-                traverse_hdr = header;
+                traverse_hdr = header->nxthdr;
                 int i = 1;
                 while(traverse_hdr != NULL)
                 {
@@ -135,3 +138,77 @@ int main()
     }
 
 }
+
+/*
+Enter the total number of memory blocks in the system:10
+Enter your choice:
+1.Allocate
+2.show the allocated files and memory
+3.Exit
+1
+Enter the number of blocks required:5
+Enter the header blocknumber:1
+Enter the other blocknumbers:2
+3
+4
+5
+File 1 allocated on blocks:0 1 2 3 4 
+Enter your choice:
+1.Allocate
+2.show the allocated files and memory
+3.Exit
+1
+Enter the number of blocks required:6
+Not nenough space to allocate the file!
+Enter your choice:
+1.Allocate
+2.show the allocated files and memory
+3.Exit
+1
+Enter the number of blocks required:4
+Enter the header blocknumber:5
+Block already allocated!
+Enter your choice:
+1.Allocate
+2.show the allocated files and memory
+3.Exit
+1
+Enter the number of blocks required:4
+Enter the header blocknumber:6
+Enter the other blocknumbers:7
+8
+9
+File 1 allocated on blocks:0 1 2 3 4 
+File 2 allocated on blocks:5 6 7 8 
+Enter your choice:
+1.Allocate
+2.show the allocated files and memory
+3.Exit
+1
+Enter the number of blocks required:2
+Not nenough space to allocate the file!
+Enter your choice:
+1.Allocate
+2.show the allocated files and memory
+3.Exit
+1
+Enter the number of blocks required:1
+Enter the header blocknumber:10
+Enter the other blocknumbers:File 1 allocated on blocks:0 1 2 3 4 
+File 2 allocated on blocks:5 6 7 8 
+File 3 allocated on blocks:9 
+Enter your choice:
+1.Allocate
+2.show the allocated files and memory
+3.Exit
+2
+File 1 allocated on blocks:0 1 2 3 4 
+File 2 allocated on blocks:5 6 7 8 
+File 3 allocated on blocks:9 
+Enter your choice:
+1.Allocate
+2.show the allocated files and memory
+3.Exit
+3
+
+*/
