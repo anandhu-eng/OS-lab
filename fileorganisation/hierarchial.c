@@ -1,111 +1,88 @@
+/*
+Program : Hierarchical File Organization
+Author : Anandhu S
+Roll no : 254
+*/
+
 #include<stdio.h>
 #include<stdlib.h>
-#include<string.h>
 
-//for storing filename
-struct file
+struct node
 {
-    char filename[50];
+    char N[25];
+    int df;
+    struct node* pc;
+    struct node* ps;
 };
+struct node* A[20];
+int in=0, c=0;
 
-//structure for directory
-struct dir
-{
-    char dirname[50];
-    struct file* dirfiles;      //inorder to access the corresponding file array related to specific directory
-    int nfiles;
-    int pointer;
-};
-
-//to allocate the files
-int allocate(struct dir* directory, char* filename)
+void create(struct node *P, int N)
 {
     int i;
-    //loop to check if file with the given filename is already present
-    for(i=0;i<directory->pointer;i++)
+    struct node*temp, *T;
+    temp=P;
+    for(i=0;i<N;i++)
     {
-        if(strcmp(directory->dirfiles[i].filename, filename) == 0)
+        T=malloc(sizeof(struct node));
+        printf("\nEnter name : ");
+        scanf("%s",T->N);
+        printf("\nEnter dir(1) or file(0) : ");
+        scanf("%d",&T->df);
+        if(T->df==1)
         {
-            return 0;
+            A[c]=T;
+            c++;
         }
-    }
-    //copy the filename to file array
-    strcpy(directory->dirfiles[directory->pointer].filename, filename);
-    directory->pointer++;
-    return 1;
-}
-
-int main()
-{
-    int choice, nofd, i, dirno, j;
-    char filename[50];
-    printf("Enter the number of directories:");
-    scanf("%d", &nofd);
-    struct dir directories[nofd];
-    for(i=0;i<nofd;i++)
-    {
-        printf("Enter the name of the directory %d:", i+1);
-        scanf("%s", directories[i].dirname);
-        printf("Enter the max number of files stored in the directory:");
-        scanf("%d", &directories[i].nfiles);
-        directories[i].dirfiles = (struct file*)malloc(sizeof(struct file)*directories[i].nfiles);
-        directories[i].pointer = 0;
-    }
-    while(1)
-    {
-        printf("Choose from the option:\n1.Allocate\n2.Display the directory structure\n3.Exit\n");
-        scanf("%d", &choice);
-        switch (choice)
-        {
-            case 1: //for allocating files
-                printf("Enter the directory number you want to allocate the file:");
-                scanf("%d", &dirno);
-                if(directories[dirno-1].pointer>=directories[dirno-1].nfiles)
-                {
-                    printf("There is no space in the directory!\n");
-                }
-                else
-                {
-                    printf("Enter the name of the file:");
-                    scanf("%s", filename);
-                    if(allocate(&directories[dirno-1], filename) == 1)
-                    {
-                        printf("File allocated successfully!\n");
-                    }
-                    else
-                    {
-                        printf("File already present in the specified directory!\nPlease choose another name!\n");
-                    }
-                }
-                break;
-            
-            case 2: //for displaying the current directory structure
-                for(i=0;i<nofd;i++)
-                {
-                    printf("Name of the directory:%s\n", directories[i].dirname);
-                    printf("The files in the directory are:\n");
-                    for(j=0;j<directories[i].pointer;j++)
-                    {
-                        printf("%s\n", directories[i].dirfiles[j].filename);
-                    }
-                }
-                break;
-            
-            case 3:
-                printf("Program exited!\n");
-                exit(1);
-                break;
+        T->pc=NULL;
+        T->ps=NULL;
         
-            default:
-                printf("Invalid choice!\n");
-                break;
+        if(i==0)
+        {
+            temp->pc=T;
+            temp=T;
+        }
+        else
+        {
+            temp->ps=T;
+            temp=T;
         }
     }
-    for(i=0;i<nofd;i++)
-    {
-        printf("The name of the directory is:%s\n", directories[i].dirname);
-    }
-
 }
 
+void display(struct node *P)
+{
+    int i;
+    P=P->pc;
+    do
+    {
+        printf("\n%s(%d)",P->N,P->df);
+        if(P->df==1 && P->pc!=NULL)
+            display(P);
+        P=P->ps;
+    }while(P!=NULL);
+}
 
+void main()
+{
+    int nusers,nc,i,j,k;
+    struct node*Hdr;
+    Hdr=malloc(sizeof(struct node));
+    Hdr->df=1;
+    Hdr->pc=NULL;
+    Hdr->ps=NULL;
+    
+    printf("\nEnter no. of users : ");
+    scanf("%d",&nusers);
+    
+    create(Hdr,nusers);
+    for(in=0;in<c;in++)
+    {
+        printf("\nEnter no. of child nodes for %s : ",A[in]->N);
+        scanf("%d",&nc);
+        create(A[in],nc);
+    }
+    printf("\n**HIERARCHICAL**\n");
+    display(Hdr);
+    
+}

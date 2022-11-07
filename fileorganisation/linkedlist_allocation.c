@@ -103,7 +103,7 @@ int main()
                         }
                     }
                 }
-            
+                break;
             case 2:
                 //printing the allocated files
                 struct blkhdrs* traverse_hdr = (struct blkhdrs *)malloc(sizeof(struct blkhdrs));
